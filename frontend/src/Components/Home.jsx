@@ -87,60 +87,91 @@ const Home = () => {
   },[])
   
   return (
-    <div>
-    {logins?<div className='flex gap-[30px] mt-6 w-[96%] m-auto' >
-     <div className='hidden md:inline-block'>  <HomeLeft  /></div>
-    <div>
-    <div  className=' w-[395px]  md:w-[550px] p-5 bg-gray-100 rounded-lg h-auto gap-4 flex flex-col justify-between'>
-      {/* center */}
-      {/* centre-top */}
-      <div className='flex gap-4' ><div className='h-[80px] rounded-lg w-[70px] md:w-[80px] bg-white overflow-hidden' ><img alt='avatar' className='h-[100px] object-cover' src={`http://localhost:3000${user.avatar}`}></img></div><input type='text' className='border-1 rounded-lg border-gray-440 w-[280px]  md:w-[460px] outline-none mt-3 text-sm h-10 px-3 text-gray-500 bg-white' placeholder='Whats on you mind' value={text} onChange={(e)=>{setText(e.target.value)}} ></input></div>
-      {/* center-bottom */}
-      <hr className='w-auto'></hr>
-      <div className='text-sm flex justify-between '>
+    <div className=''>
+
+    {logins?
+    
+    // Profile Component
+    <div className='flex flex-col md:flex-row justify-center gap-[30px] mt-6 sm:w-[94%] m-auto' >
+    <div className='hidden sm:block'>  <HomeLeft  /></div>
+
+    {/* Post Component */}
+    <div className='w-full h'>
+    <div  className=' p-5 bg-gray-100 rounded-lg  gap-4 flex flex-col justify-between'>
+      <div className='flex gap-4' ><div className='h-[80px] rounded-lg w-[70px] md:w-[80px] bg-white overflow-hidden' ><img alt='avatar' className='h-[100px] object-cover' src={`http://localhost:3000${user.avatar}`}></img></div><input type='text' className='border-1 rounded-lg border-gray-440 w-full outline-none mt-3 text-sm h-10 px-3 text-gray-500 bg-white' placeholder='Whats on you mind' value={text} onChange={(e)=>{setText(e.target.value)}} ></input></div>
+
+      {/* Post-bottom */}
+      <hr className='w-auto '></hr>
+      <div className='text-sm flex justify-between  '>
         <div className='flex gap-3 items-center hover:cursor-pointer relative  '><MdOutlineImage className='text-lg' /><input className='w-10 hover:cursor-pointer text-gray-100' ref={ref} type='file' placeholder='image' onChange={files} ></input><p className='absolute ml-6' onClick={click}>image</p></div>
         <div className='flex gap-3 items-center hover:cursor-pointer relative'><AiOutlineAudio className='text-lg' /><input className='w-10 hover:cursor-pointer text-gray-100' type='file' ref={ref} onChange={files}></input><p className='absolute ml-6' onClick={click}>Audio</p></div>
         <div className='flex gap-3 items-center hover:cursor-pointer relative'><GoPaperclip className='text-lg' /><input className='w-10 hover:cursor-pointer text-gray-100' type='file' ref={ref} onChange={files}></input><p className='absolute ml-7' onClick={click}>File</p></div>
         <div className='flex gap-3 items-center hover:cursor-pointer relative  mr-8  '><MdOutlineAttachment className='text-lg' /><input ref={ref} className='w-10  text-gray-100 hover:cursor-pointer ' type='file' onChange={files}></input><p className='absolute ml-8 ' onClick={click}>Attachment</p></div>
-        <button  className='bg-blue-600  hidden md:inline-block text-white rounded-lg px-3 py-1 hover:cursor-pointer hover:bg-blue-800' onClick={userpost}>Post</button>
       </div>
-      <button  className='bg-blue-600  md:hidden  text-white rounded-lg px-3 py-1 hover:cursor-pointer hover:bg-blue-800' onClick={userpost}>Post</button>
+      <button  className='bg-blue-600   text-white rounded-lg px-3 py-1 hover:cursor-pointer hover:bg-blue-800' onClick={userpost}>Post</button>
     </div>
-    {/* center bottom */}
-    
-    <div className='rounded-lg w-[395px] md:w-[550px] mt-5 flex flex-col gap-4 '>
-      {/* profile`` */}  
-        {post.map((e=>{return(<div key={e._id} className=' flex flex-col rounded-xl  gap-4 bg-gray-100  p-6 '>
 
-          <div className='text-sm flex  font-semibold justify-between items-center'>
-        <img alt='profile' className='h-[70px] rounded-lg' src={`http://localhost:3000${e.userid.avatar}`}></img>
-        <div className='md:mr-30'><p>{e.userid.name}</p>
-        <p>{e.userid.email}</p></div>
-        <UserPlus onClick={()=>{addfriend(e)}}  className='text-sm hover:cursor-pointer hover:text-red-500' />
+    {/* Post bottom */}
+    <div className='rounded-lg mt-5 flex flex-col gap-4 w-full'>
+  {/* Profile */}  
+  {post.map((e) => (
+    <div key={e._id} className='flex flex-col rounded-xl gap-4 bg-gray-100 p-6 w-full'>
+      <div className='text-sm flex relative font-semibold justify-between items-center w-full'>
+        <img alt='profile' className='h-[50px] w-[50px] rounded-lg object-cover' src={`http://localhost:3000${e.userid.avatar}`} />
+        <div className='ml-3 flex-1'>
+          <p>{e.userid.name}</p>
+          <p className='text-gray-600 text-xs'>{e.userid.email}</p>
+        </div>
+        <UserPlus onClick={() => addfriend(e)} className='text-sm hover:cursor-pointer hover:text-red-500' />
       </div>
       <p className='text-sm'>{e.text}</p>
-      <div className='flex flex-col gap-2'>
-          <img alt='profile' className=' object-cover  w-[500px]' src={`http://localhost:3000/${e.post}`}></img>
-       
-        <div className='text-md font-semibold'>
-          </div><div className='flex  px-6 gap-2 relative'><AiOutlineLike onClick={()=>{addlike(e)}} className={`text-2xl hover:cursor-pointer hover:text-red-400 ${localStorage.getItem('userid')===post.likes?'text-red-500':'text-black'}`} /><p className=''>{e?.likes?.length}</p><LiaCommentSolid onClick={()=>setCommentInput(!commentinput)} className='text-2xl ml-8 hover:cursor-pointer hover:text-red-400' /><p>{getcomments?.length}</p>
-          
-          {localStorage.getItem('userid')===e.userid._id?<MdOutlineDeleteOutline className='text-2xl ml-35 md:ml-75 hover:cursor-pointer hover:text-red-400' onClick={()=>{del(e)}} />:null}</div>
-          <div className={`${commentinput?'inline-block':'hidden'}`}><input onKeyDown={(e)=>addcomment(e)}  value={comment} onChange={(e)=>setComment(e.target.value)} className=' border-b-1 w-80 md:w-[455px]  ml-6 text-sm h-8 outline-none' placeholder='Enter Comment...'></input><div className='flex flex-col mt-1'>{getcomments.map((e)=>{return(<div className='text-sm ml-6 flex flex-col' key={e._id}><p className='border-b-1 py-1 md:w-[455px]'>{e.comment}</p></div>)})}</div></div></div></div>)}))}
-          
-       </div>
+      <div className='flex flex-col gap-2 w-full'>
+        <img alt='post' className='object-cover w-full rounded-lg' src={`http://localhost:3000/${e.post}`} />
+        <div className='flex px-6 gap-2 items-center'>
+          <AiOutlineLike onClick={() => addlike(e)} className={`text-2xl hover:cursor-pointer hover:text-red-400 ${localStorage.getItem('userid') === post.likes ? 'text-red-500' : 'text-black'}`} />
+          <p>{e?.likes?.length}</p>
+          <LiaCommentSolid onClick={() => setCommentInput(!commentinput)} className='text-2xl ml-4 hover:cursor-pointer hover:text-red-400' />
+          <p>{getcomments?.length}</p>
+          {localStorage.getItem('userid') === e.userid._id && (
+            <MdOutlineDeleteOutline className='text-2xl ml-auto hover:cursor-pointer hover:text-red-400' onClick={() => del(e)} />
+          )}
+        </div>
+        {commentinput && (
+          <div className='px-6 w-full'>
+            <input 
+              onKeyDown={(e) => addcomment(e)} 
+              value={comment} 
+              onChange={(e) => setComment(e.target.value)} 
+              className='border-b w-full text-sm h-8 outline-none' 
+              placeholder='Enter Comment...'
+            />
+            <div className='flex flex-col mt-1'>
+              {getcomments.map((comment) => (
+                <div className='text-sm flex flex-col' key={comment._id}>
+                  <p className='border-b py-1 w-full'>{comment.comment}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  ))}
+</div>
+
     </div>
   
-    {/* right div */}
-    <div className='hidden md:inline-block'>
+    {/* Sponsered Component */}
+    <div className='hidden xl:inline-block'>
     <div className='w-[350px] h-[310px] flex flex-col justify-between rounded-xl bg-gray-100 p-5'>
     <div className='text-sm flex justify-between'>  <p className='font-semibold'>Sponsered</p><p>Create Add</p></div>
     <img  className='rounded-xl ' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaiKsxicAPvGJl4qkuJ5GdOt2N1Ydg60eq1A&s' alt=''></img>
     <div className='text-sm flex justify-between'> <p>Cosemetica</p><p>Cosmeticaproducts.com</p></div>
     <p className='text-sm '>Cosemtetic Products for you healthy skin. Visit our website for more details.</p>
     </div>
-    {/* right bottom */}
-    <div className=' bg-gray-100 p-5 w-[350px] mt-6 flex flex-col justify-between rounded-xl'><p className='text-sm font-semibold'>Friends List</p><div className='text-sm  flex flex-col gap-4 mt-2'>
+
+    {/* Friend List */}
+    <div className=' bg-gray-100 p-5 w-[350px] mt-6 hidden xl:flex flex-col justify-between rounded-xl'><p className='text-sm font-semibold'>Friends List</p><div className='text-sm  flex flex-col gap-4 mt-2'>
       <hr></hr>
      {friend.map((e)=>{return(<Link to={`/friend/${e._id}`} key={e._id}><div className='flex gap-4 items-center  font-semibold hover:cursor-pointer'><img alt='img' className='h-12 rounded-lg w-12 object-cover' src={`http://localhost:3000${e.avatar}`}></img>
      <div className='w-50'><p>{e.name}</p>
